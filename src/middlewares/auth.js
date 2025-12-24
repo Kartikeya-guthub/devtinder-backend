@@ -11,7 +11,7 @@ const { token } = cookies;
 if (!token) {
     throw new Error("No token found");
   }
-const decodedmessage = await jwt.verify(token, "your_secret_key");
+const decodedmessage = await jwt.verify(token, process.env.jwt_secret);
 const { userId } = decodedmessage;
 
 
