@@ -19,8 +19,9 @@ const userSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
         validate(value){
+            
             if(!validator.isEmail(value)){
-                throw new Error("Invalid email address");
+                 throw new Error(`Invalid email address: ${value}`);
             }
         }
     },
@@ -29,7 +30,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         validate(value){
             if(!validator.isStrongPassword(value)){
-                throw new Error("Password is not strong enough");
+                throw new Error(`Password is not strong enough: ${value}`);
             }
         }
     },
@@ -65,7 +66,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default:" Hey there! I'm using DevTinder."
     },
-    phtotoUrl:{
+    photoUrl:{
         type: String,
         default: "👦"
     } 
@@ -76,8 +77,8 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.getJWT = async function() {
     const user = this;
-    const token = await jwt.sign({ userId: this._id }, "your_secret_key", { expiresIn: "1h" });
-    return token;
+    const token = await jwt.sign({ userId: this._id }, process.env.jwt_secret, { expiresIn: "1h" });
+    return token; 
 }
 
 userSchema.methods.validatePassword = async function(passwordInput) {

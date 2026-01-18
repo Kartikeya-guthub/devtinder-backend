@@ -10,13 +10,18 @@ authrouter.post('/signup', async (req, res) => {
   // Create a new user instance
   try {
     validateSignupData(req);
-    const { firstName, lastName, emailId, password } = req.body;
+    const { firstName, lastName, emailId, password, age, gender, skills, bio, photoUrl } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       firstName,
       lastName,
       emailId,
       password: hashedPassword,
+      age,
+      gender,
+      skills,
+      bio,
+      photoUrl: photoUrl,
     });
     await user.save();
     res.send({ message: "User registered successfully" });

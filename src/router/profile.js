@@ -3,6 +3,7 @@
 const express = require('express');
 const { userAuth } = require('../middlewares/auth');
 const { validateEditProfileData } = require('../utils/validation');
+const bcrypt = require('bcrypt');
 const profilerouter = express.Router();
  
 profilerouter.get('/profile/view', userAuth, (req, res) => {
@@ -28,7 +29,7 @@ profilerouter.patch('/profile/edit', userAuth, async (req, res) => {
         });
         await loggedinuser.save();
 
-        console.log("User before update:", loggedinuser);
+    
         res.end("Profile updated successfully" );
     }catch(error){
         return res.status(400).json({ error: error.message });
@@ -43,7 +44,8 @@ profilerouter.patch('/profile/password', userAuth, async (req, res) => {
         if(!isMatch){
             throw new Error("Old password is incorrect");
         }
-        loggedinuser.password = newPassword;
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+        loggedinuser.password = hashedNewPassword;
         await loggedinuser.save();
         res.send("Password updated successfully");
     }catch(error){

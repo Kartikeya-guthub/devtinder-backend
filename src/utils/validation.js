@@ -3,17 +3,18 @@ const validator = require('validator');
 const validateSignupData = (req) => {
     const{ firstName, emailId, password,lastName, age} = req.body;
     if(!firstName || !lastName){
-        throw new Error("First name and Last name are required");
+        throw new Error(`First name and Last name are required: ${firstName} ${lastName}`);
     }else if(!validator.isEmail(emailId)){
-        throw new Error("Invalid email address");
+        throw new Error(`Invalid email address: ${emailId}`);
     }else if(!validator.isStrongPassword(password)){
-        throw new Error("Password is not strong enough");
+        throw new Error(`Password is not strong enough: ${password}`);
     }
 
 }
 
 const validateEditProfileData = (req) => {
-    const allowedFields = ['firstName', 'lastName', 'age', 'gender', 'skills', 'photoUrl','about','emailId'];
+    
+    const allowedFields = ['firstName', 'lastName', 'age', 'gender', 'skills', 'photoUrl', 'bio', 'emailId'];
     const isEditAlloweed = Object.keys(req.body).every(field => allowedFields.includes(field));
     return isEditAlloweed;
 }

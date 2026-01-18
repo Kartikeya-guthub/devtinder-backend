@@ -52,7 +52,12 @@ src/
 ### Profile
 - `GET /profile/view` — View logged-in user's profile
 - `PATCH /profile/edit` — Edit profile fields
-- `PATCH /profile/password` — Change password (note: new password is not hashed, security issue)
+- `PATCH /profile/password` — Change password (new password is hashed)
+
+`PATCH /profile/edit` accepts these fields:
+- `firstName`, `lastName`, `age`, `gender`, `skills`, `emailId`
+- `photoUrl`
+- `bio`
 
 ### Connection Requests
 - `POST /request/send/:status/:toUserId` — Send a connection request (`status`: Ignore or Interested)
